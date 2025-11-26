@@ -26,9 +26,63 @@ To implement MESSAGE AUTHENTICATION CODE(MAC)
 
 ## Program:
 
-
+      #include <stdio.h>
+      #include <string.h>
+      
+      #define MAC_SIZE 32 // Define MAC size in bytes
+      
+      // Function to compute a simple MAC using XOR
+      void computeMAC(const char *key, const char *message, char *mac) {
+          int key_len = strlen(key);
+          int msg_len = strlen(message);
+      
+          // XOR the key and message, repeating if necessary
+          for (int i = 0; i < MAC_SIZE; i++) {
+              mac[i] = key[i % key_len] ^ message[i % msg_len]; // Simple XOR operation
+          }
+      
+          mac[MAC_SIZE] = '\0'; // Null-terminate the MAC string
+      }
+      
+      int main() {
+          char key[100], message[100];
+          char mac[MAC_SIZE + 1]; // Buffer for MAC (+1 for null terminator)
+          char receivedMAC[MAC_SIZE + 1]; // Buffer for input of received MAC
+      
+          // Step 1: Input secret key
+          printf("Enter the secret key: ");
+          scanf("%s", key);
+      
+          // Step 2: Input the message
+          printf("Enter the message: ");
+          scanf("%s", message);
+      
+          // Step 3: Compute the MAC
+          computeMAC(key, message, mac);
+      
+          // Step 4: Display the computed MAC (in hex)
+          printf("Computed MAC (in hex): ");
+          for (int i = 0; i < MAC_SIZE; i++) {
+              printf("%02x", (unsigned char)mac[i]);
+          }
+          printf("\n");
+      
+          // Step 5: Input the received MAC
+          printf("Enter the received MAC (as hex): ");
+          scanf("%s", receivedMAC);
+      
+          // Step 6: Verify the MAC
+          if (strcmp(mac, receivedMAC) == 0) {
+              printf("MAC verification successful. Message is authentic.\n");
+          } else {
+              printf("MAC verification failed. Message may have been tampered with.\n");
+          }
+      
+          return 0;
+      }
 
 ## Output:
+![WhatsApp Image 2025-10-17 at 14 37 14_2bdfa9b6](https://github.com/user-attachments/assets/6e736967-6b47-4891-bf34-7510c511cd69)
 
 
 ## Result:
